@@ -1,0 +1,51 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+}
+
+
+body{
+    background-image:url(../img/fondo.png);
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-attachment: fixed;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-rows:1fr;
+    height:100vh;
+}
+
+.luna{
+   overflow:hidden;
+   text-align:center;
+   position:absolute;
+   width:100%;
+   height:200px;
+   bottom:0;
+}
+
+.luna__img{
+    width:800px;
+    transform:rotate(15deg);
+}
+
+@media screen and (max-width:796px){
+    .luna__img{
+        width:500px;
+    }
+}
+
+@media screen and (max-width:524px){
+    .luna__img{
+        width:300px;
+    }
+    .luna{
+        height:100px;
+    }
+}
+
