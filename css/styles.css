@@ -18,6 +18,7 @@ ul{
     --rojo-primario-hover:#d22;
     --verde-primario-hover:#0c0;
     --gris-menu:#ccc;
+    --negro-menu:#333;
 }
 
 /*****************Basic styles****************/
@@ -110,12 +111,13 @@ body{
     margin-bottom:20px;
     font-size:1.6vw;
     padding:10px 15px;
-    background-color:#ccc;
+    background-color:var(--negro-menu);
     border-radius:12px;
+    color:#fff;
 }
 
 .marcadores__item svg{
-    color:#555;
+    color:#ccc;
 }
 
 .marcadores__fuel{
@@ -127,7 +129,7 @@ body{
 
 .marcadores__numero{
     margin-left:auto;
-    background-color:#555;
+    background-color:#333;
     text-align:center;
     padding:4px;
     color:#fff;
@@ -200,7 +202,7 @@ body{
     .marcadores__menu{
         border-radius:12px;
         width:auto;
-        background-color:#ccc;
+        background-color:var(--negro-menu);
     }
 
     .marcadores__item {
