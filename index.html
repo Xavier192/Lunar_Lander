@@ -21,16 +21,54 @@
 
 <body>
     <main class="grid">
+        <!--Marcadores-->
         <section class="marcadores">
-            
+            <ul class="marcadores__menu">
+                <li class="marcadores__item flex">
+                    <i class="fas fa-gas-pump"></i>
+                    <div class="marcadores__fuel"></div>
+                </li>
+                <li class="marcadores__item flex">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="marcadores__texto"> Vel </span>
+
+                    <div class="marcadores__numero">
+                        100 m/s
+                    </div>
+                </li>
+                <li class="marcadores__item flex">
+                    <i class="fas fa-arrow-up"></i>
+                    <span class="marcadores__texto"> Altura </span>
+                    <div class="marcadores__numero">
+                        70 m
+                    </div>
+                </li>
+                <li class="marcadores__item flex">
+                    <i class="fas fa-skull-crossbones"></i>
+                    <span class="marcadores__texto"> Intentos </span>
+                    <div class="marcadores__numero">
+                        0
+                    </div>
+                </li>
+            </ul>
         </section>
+        <!--Naves-->
         <section class="nave">
+            <div class="nave__alien">
+                <img src="img/alien.svg" alt="alien">
+            </div>
 
         </section>
+        <!--Botonera-->
         <section class="botonera">
-            <i class="fas fa-pause"></i>
+            <div class="pause flex">
+                <i class="fas fa-pause"></i>
+            </div>
+
+            <div class="reiniciar flex">
+                <i class="fas fa-redo"></i>
+            </div>
         </section>
-        
     </main>
 
     <section class="luna">

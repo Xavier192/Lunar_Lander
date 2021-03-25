@@ -1,9 +1,26 @@
+/******************Reset y variables***************/
+
+@import url('https://fonts.googleapis.com/css2?family=Sansita&display=swap');
+
 *{
     padding:0;
     margin:0;
     box-sizing:border-box;
 }
 
+ul{
+    list-style:none;
+}
+
+:root{
+    --rojo-primario:#f44;
+    --verde-primario:#3d3;
+    --rojo-primario-hover:#d22;
+    --verde-primario-hover:#0c0;
+    --gris-menu:#ccc;
+}
+
+/*****************Basic styles****************/
 
 body{
     background-image:url(../img/fondo.png);
@@ -11,6 +28,7 @@ body{
     background-repeat:no-repeat;
     background-position:center center;
     background-attachment: fixed;
+    font-family:'Sansita',sans-serif;
 }
 
 .grid{
@@ -18,6 +36,10 @@ body{
     grid-template-columns:repeat(3, 1fr);
     grid-template-rows:1fr;
     height:100vh;
+}
+
+.grid > *{
+    position:relative;
 }
 
 .luna{
@@ -34,18 +56,186 @@ body{
     transform:rotate(15deg);
 }
 
-@media screen and (max-width:796px){
+/******************Utilidades******************************/
+
+.flex{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/******************Botonera*********************/
+
+.botonera > *{
+    position:absolute;
+    right:50px;
+    padding:30px;
+    font-size:42px;
+    border-radius:12px;
+    cursor:pointer;
+    color:#fff;
+    transition:background-color .4s;
+}
+
+.pause{
+    top:50px;
+    background-color:var(--rojo-primario);
+}
+
+.reiniciar{
+    top:205px;
+    background-color:var(--verde-primario);
+}
+
+.pause:hover{
+    background-color:var(--rojo-primario-hover);
+}
+
+.reiniciar:hover{
+    background-color:var(--verde-primario-hover);
+}
+
+/*******************Marcadores********************/
+
+.marcadores__menu{
+    position:absolute;
+    top:50px;
+    left:50px;
+    border-radius:12px;
+    opacity:.8;
+    width:40%;
+}
+
+.marcadores__item{
+    margin-bottom:20px;
+    font-size:1.6vw;
+    padding:10px 15px;
+    background-color:#ccc;
+    border-radius:12px;
+}
+
+.marcadores__item svg{
+    color:#555;
+}
+
+.marcadores__fuel{
+    flex-grow:1;
+    height:20px;
+    background-color:var(--verde-primario);
+    margin-left:10px;
+}
+
+.marcadores__numero{
+    margin-left:auto;
+    background-color:#555;
+    text-align:center;
+    padding:4px;
+    color:#fff;
+    border-radius:10px;
+}
+
+.marcadores__texto{
+    margin-left:10px;
+}
+
+/**************************Alien***************************/
+
+.nave__alien{
+    position:absolute;
+    width:40%;
+    bottom:130px;
+    left:-100px;
+}
+
+.nave__alien img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+@media screen and (min-width:1500px){
+    .marcadores__item{
+        font-size:25px;
+    }
+}
+
+@media screen and (max-width:994px){
+    .marcadores__texto{
+        display:none;
+    }
+
+    .marcadores__item{
+        font-size:22px;
+    }
+
+    .marcadores__fuel{
+        height:10px;
+        margin:0;
+    }
+
+    .marcadores__menu{
+        left:10px;
+        top:10px;
+    }
+
+    .botonera > *{
+        right:10px;
+        padding:20px;
+        font-size:32px;
+    }
+
+    .pause{
+        top:20px;
+    }
+
+    .reiniciar{
+        top:138px;
+    }
+
+    .marcadores__item{
+        display:block;
+        width:90px;
+    }
+
+    .marcadores__menu{
+        border-radius:12px;
+        width:auto;
+        background-color:#ccc;
+    }
+
+    .marcadores__item {
+        text-align:center;
+    }
+
+    .marcadores__numero{
+        margin-top:5px;
+    }
+
     .luna__img{
         width:500px;
     }
+    .luna{
+        height:130px;
+    }
+
 }
 
-@media screen and (max-width:524px){
+@media screen and (max-width:500px){
     .luna__img{
         width:300px;
     }
-    .luna{
-        height:100px;
+
+    .botonera>*{
+        padding:10px;
+    }
+
+    .reiniciar{
+        top:100px;
+    }
+
+    .marcadores__item{
+        width:70px;
+        font-size:16px;
+        margin-bottom:0;
     }
 }
-
