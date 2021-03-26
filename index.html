@@ -16,7 +16,7 @@
     <meta name="og:site_name" content="Lunar Lander">
     <link type="text/css" rel="stylesheet" href="css/styles.css">
     <script src="font-awesome/font-awesome.js"></script>
-    <script src="js/script.js" defer></script>
+    <script src="js/js.js" defer></script>
 </head>
 
 <body>
@@ -33,21 +33,21 @@
                     <span class="marcadores__texto"> Vel </span>
 
                     <div class="marcadores__numero">
-                        100 m/s
+                        <span id="velocidad">100</span> m/s
                     </div>
                 </li>
                 <li class="marcadores__item flex">
                     <i class="fas fa-arrow-up"></i>
                     <span class="marcadores__texto"> Altura </span>
                     <div class="marcadores__numero">
-                        70 m
+                        <span id="altura">70</span> m
                     </div>
                 </li>
                 <li class="marcadores__item flex">
                     <i class="fas fa-skull-crossbones"></i>
                     <span class="marcadores__texto"> Intentos </span>
                     <div class="marcadores__numero">
-                        0
+                       <span id="intentos">0</span> 
                     </div>
                 </li>
             </ul>
@@ -57,7 +57,9 @@
             <div class="nave__alien">
                 <img src="img/alien.svg" alt="alien">
             </div>
-
+            
+                <img src="img/nave_sin_fuego.svg" alt="Nave" class="nave__pj">
+            
         </section>
         <!--Botonera-->
         <section class="botonera">
