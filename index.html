@@ -19,7 +19,7 @@
     <script src="js/js.js" defer></script>
 </head>
 
-<body>
+<body class="background">
     <main class="grid">
         <!--Marcadores-->
         <section class="marcadores">
@@ -27,6 +27,7 @@
                 <li class="marcadores__item flex">
                     <i class="fas fa-gas-pump"></i>
                     <div class="marcadores__fuel"></div>
+                    <div class="marcadores__fuel-negativo"></div>
                 </li>
                 <li class="marcadores__item flex">
                     <i class="fas fa-tachometer-alt"></i>
@@ -47,7 +48,7 @@
                     <i class="fas fa-skull-crossbones"></i>
                     <span class="marcadores__texto"> Intentos </span>
                     <div class="marcadores__numero">
-                       <span id="intentos">0</span> 
+                        <span id="intentos">0</span>
                     </div>
                 </li>
             </ul>
@@ -57,9 +58,9 @@
             <div class="nave__alien">
                 <img src="img/alien.svg" alt="alien">
             </div>
-            
+            <div class="nave__contenedor">
                 <img src="img/nave_sin_fuego.svg" alt="Nave" class="nave__pj">
-            
+            </div>
         </section>
         <!--Botonera-->
         <section class="botonera">
@@ -75,7 +76,19 @@
 
     <section class="luna">
         <img src="img/luna.svg" alt="luna" class="luna__img">
+        <img src="img/luna_movil.svg" alt="luna_movil" class="luna__movil">
     </section>
+
+    <div class="modal">
+        <div class="modal__inner background">
+                <ul class="modal__menu">
+                    <li class="modal__item"><a href="#" class="modal__link">Continuar</a></li>
+                    <li class="modal__item"><a href="#" class="modal__link"> <i class="fas fa-info"></i>  Instrucciones</a></li>
+                    <li class="modal__item"><a href="#" class="modal__link"><i class="fas fa-address-card"></i> About</a></li>
+                    <li class="modal__item"><a href="#" class="modal__link"><i class="fas fa-chart-line"></i> Dificultad</a></li>
+                </ul>
+        </div>
+    </div>
 
 </body>
 

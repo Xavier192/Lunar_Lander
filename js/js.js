@@ -1,94 +1,153 @@
 
-//ENTORNO
-var g = 1.622;
-var dt = 0.016683;
-var timer=null;
-var pausa=false;
-var timerFuel=null;
-//NAVE
-var y = 20; // altura inicial y0=10%, debe leerse al iniciar si queremos que tenga alturas diferentes dependiendo del dispositivo
-var v = 0;//velocidad.
-var c = 1000000;//combustible
+/*******************************Varibales y definiciones**********************/
+//Intervalos
+let timer=null;
+let timerFuel=null;
+//Bloqueadores de acciones
+let teclaApretada=false;
+let combustibleAgotado = false;
+//Variables de la nave.
+let g = 1.622;
+let dt = 0.016683;
+let altura = 10; 
+let velocidad = 0;
+let fuel = 100;
 let intentos=0;
-//la aceleración cambia cuando se enciende el motor de a=g a a=-g (simplificado)
-var a = g;
-//MARCADORES
+let a = g;
+
+/************Objeto nave***********/
+
+const contenedorNave = document.querySelector(".nave__contenedor");
+const nave = document.querySelector(".nave__pj");
+
+/****************Limites*****************/
+
+const limiteSuperior = 0;
+const limiteInferior = 64;
+
+/**********************Objetos marcador HTML.********************/
+
 const marcadorVelocidad = document.getElementById("velocidad");
 const marcadorAltura = document.getElementById("altura");
 const marcadorIntentos = document.getElementById("intentos");
+const marcadorFuel = document.querySelector('.marcadores__fuel');
+const marcadorFuelNegativo = document.querySelector('.marcadores__fuel-negativo');
 
-//encender/apagar al apretar/soltar una tecla
+
+/****************Listeners apretar o soltar tecla************************/
 document.onkeyup = motorOff;
-document.onkeydown = motorOn;
+document.onkeydown = function(){
+	if(!teclaApretada && fuel > 0){
+		motorOn();
+		teclaApretada=true;
+	}
+};
 
-
-//al cargar por completo la página...
 window.onload = function(){
-	//Empezar a mover la nave justo después de cargar la página
 	start();
 }
 
-//Definición de funciones
 function start(){
-	//cada intervalo de tiempo mueve la nave
 	timer = setInterval(function(){ moverNave(); }, dt*100);
 }
 
-function moverNave(){
-	var vReal=null;
-	var aReal=null;
-	//cambiar velocidad y posicion
-	v +=a*dt;
-	y +=v*dt;
-	//velocidad siempre positiva.
-	if(v<0){
-		vReal=-v;
-	}
-
-	else if(v>=0){
-		vReal=v;
-	}
-	//altura baja cuando la nave cae.
-	aReal=70-y;
-	
-	if(aReal<=0){
-		vReal=0;
-	}
-
-	else{
-		v=v;	
-	}
-	//actualizar marcadores de texto.
-	marcadorVelocidad.innerHTML=vReal.toFixed(2);
-	marcadorAltura.innerHTML=aReal.toFixed(0);
-	
-	//mover hasta que top sea un 70% de la pantalla
-	if (y<70){
-		document.querySelector(".nave__pj").style.top = y+"%";
-	}
-	console.log(y);
-}
+/*****************Encender y apagar el motor de la nave*****************/
 
 function motorOn(){
-	//el motor da aceleración a la nave
 	a=-g;
-	timerFuel=setInterval(function(){ actualizarFuel(); }, 10);
-	//cambiamos el source de la nave sin fuego a la nave con fuego para que mientras acelere muestre la nave con fuego.
-	document.querySelector(".nave__pj").src = "../img/nave.svg";
+	nave.src = "img/nave.svg";
+	timerFuel=setInterval(function(){ actualizarFuel() }, 20);
 }
 
 function motorOff(){	
 	a=g;
+	nave.src="img/nave_sin_fuego.svg";
 	clearInterval(timerFuel);
-	document.querySelector(".nave__pj").src="../img/nave_sin_fuego.svg";
-	timerFuel=null;
+	teclaApretada = false;
 }
+
+/***************Calcula velocidad y altura de la nave y la aplica*********************/ 
+
+function moverNave(){
+	velocidad+=a*dt;
+	altura +=velocidad*dt;
+
+	let aReal = calcularAltura();
+	let vReal = calcularVelocidad(aReal);
+
+	marcadorVelocidad.innerHTML=vReal.toFixed(2);
+	marcadorAltura.innerHTML=(aReal.toFixed(0))*2;
+	
+	contenedorNave.style.top = comprobarLimites();
+
+	revisarFuel();
+}
+
+function revisarFuel(){
+	if(fuel <= 0){
+		motorOff();
+	}
+}
+
+function comprobarLimites(){
+	if (altura<limiteInferior){
+		return altura+"%";
+	}	
+
+	else{
+		pararNave();
+		return limiteInferior+'%';
+	} 
+}
+
+function pararNave(){
+	clearInterval(timer);
+	fuel=0;
+	motorOff();
+}
+
+function calcularAltura(){
+	let alturaCalculada = limiteInferior-altura;
+
+	if((limiteInferior-altura)<=0){
+		return 0;
+	}
+
+	return alturaCalculada;
+}
+
+function calcularVelocidad(aReal){
+	let velocidadCalculada = transformarVelocidadPositiva(velocidad);
+	velocidadCalculada = ponerMarcadorVelocidadAZero(aReal,velocidadCalculada);
+
+	return velocidadCalculada;
+}
+
+function ponerMarcadorVelocidadAZero(aReal,vReal){
+	if(aReal<=0){
+		return 0;
+	}
+
+	return vReal;
+}
+
+function transformarVelocidadPositiva(velocidad){
+	if(velocidad<0){
+		return -velocidad;
+	}
+
+	return velocidad;
+}
+
+/*******************Actualiza marcadores de fuel y intentos******************/
 
 function actualizarFuel(){
-		
+	fuel-=0.3;
+
+	marcadorFuel.style.width=fuel+'%';
+	marcadorFuelNegativo.style.width = 100-fuel+'%';
 }
 
-//función para incrementar marcador de intentos fállidos.
 function incrementarMarcador(){
 	intentos++;
 	marcadorIntentos.innerHTML=int;
