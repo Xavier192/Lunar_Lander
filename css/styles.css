@@ -1,5 +1,5 @@
 /******************Reset y variables***************/
-
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sansita&display=swap');
 
 *{
@@ -190,11 +190,10 @@ body{
 .modal{
     width:100%;
     height:100%;
-    background-color:rgba(70,70,70,.5);
+    background-color:rgba(200,200,200,.2);
     position:absolute;
     z-index:3;
     top:0;
-    visibility:visible;
     display:flex;
 }
 
@@ -203,9 +202,10 @@ body{
     height:500px;
     border-radius:12px;
     display:flex;
-    background-image:url(../img/fondo.png);
-    filter:contrast(3);
+    background-color:#000;
     margin:auto;
+    border:3px solid rgba(255,255,255,.4);
+    opacity:.9;
 }
 
 .modal__menu{
@@ -216,18 +216,75 @@ body{
 
 .modal__item{
     width:90%;
-    border:2px solid rgb(192, 192, 192);
+    border:2px solid rgb(1,0,180);
     margin:30px auto;
     border-radius:10px;
     padding:16px;
     cursor:pointer;
     font-size:25px;
-    background-color:#333;
-    opacity:.4;
+    background-color:rgb(1, 0, 34);
 }
+
 .modal__link{
     color:#fff;
 }
+
+.modal__item:hover>.modal__link{
+    color:#f2fc88;
+    text-shadow:0 0 2px #f4ff7f, 0 0 5px ;
+}
+
+.modal__cuerpo{
+    text-align:center;
+    flex:1;
+    width:95%;
+    padding:20px;
+    color:#fff;
+    font-weight:200;
+    letter-spacing:1px;
+    position:relative;
+}
+
+.modal__titulo{
+    line-height:2.5;
+}
+
+.hidden{
+    visibility: hidden;
+}
+
+/*Modal instrucciones*/
+
+.instrucciones__menu .modal__inner{
+    width:600px;
+}
+.about__menu .modal__inner{
+    width:600px;
+}
+
+.modal__inner p{
+    text-align:left;
+}
+
+.volver{
+    color:#fff;
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.volver:hover{
+    color:#f2fc88;
+    text-shadow:0 0 2px #f4ff7f, 0 0 5px ;
+}
+
+.active .modal__link{
+    color:#f2fc88;
+    text-shadow:0 0 2px #f4ff7f, 0 0 5px ;
+}
+
+
 
 @media screen and (min-width:1500px){
     .marcadores__item{
@@ -245,6 +302,10 @@ body{
     }
 
     .marcadores__fuel{
+        height:10px;
+        margin:10px 0;
+    }
+    .marcadores__fuel-negativo{
         height:10px;
         margin:0;
     }
