@@ -3,10 +3,12 @@
 //Intervalos
 let timer = null;
 let timerFuel = null;
+let timerButton = null;
 //Bloqueadores de acciones
 let motorRoto = false;
 let combustibleAgotado = false;
 let pause = false;
+let botonEncendido = false;
 //Variables de la nave.
 let g = 1.622;
 let dt = 0.016683;
@@ -25,7 +27,7 @@ const nave = document.querySelector(".nave__pj");
 /****************Limites*****************/
 
 const limiteSuperior = 0;
-const limiteInferior = 64;
+const limiteInferior = 65.9;
 
 /**********************Objetos marcador HTML.********************/
 
@@ -35,10 +37,8 @@ const marcadorIntentos = document.getElementById("intentos");
 const marcadorFuel = document.querySelector('.marcadores__fuel');
 const marcadorFuelNegativo = document.querySelector('.marcadores__fuel-negativo');
 
-/*****************************Modals****************************/
+/*****************************Botones Modales****************************/
 
-
-const modal = document.querySelector('.modal');
 const botonPausa = document.querySelector('.pause');
 const botonReiniciar = document.querySelector('.reiniciar');
 const botonContinuar = document.querySelector('.continuar');
@@ -52,25 +52,29 @@ const botonNormal = document.querySelector('.normal');
 const botonDificil = document.querySelector('.dificil');
 const botonImposible = document.querySelector('.imposible');
 
+/**********************************Modales********************************/
+
+const modal = document.querySelector('.modal');
 const modalMenu = document.querySelector('.menu');
 const modalInstrucciones = document.querySelector('.instrucciones__menu');
 const modalAbout = document.querySelector('.about__menu');
 const modalDificultad = document.querySelector('.dificultad__menu');
 
+
+/*****************Boton encender motor*******************/
+
+const botonEncender = document.querySelector('.acelerar');
+
 /****************Listeners apretar o soltar tecla************************/
 document.onkeyup = motorOff;
 
 document.onkeydown = function () {
-	motorRoto = comprobarEstadoMotor();
-
-	if (!motorRoto) {
-		motorOn();
-		motorRoto = true;
-	}
+	comprobarEncendido();
 };
 
 /************************Listeners modales**********************/
 
+botonEncender.addEventListener('click',switchBoton);
 botonPausa.addEventListener('click', pausa);
 botonReiniciar.addEventListener('click', reiniciar);
 botonContinuar.addEventListener('click', reanudar);
@@ -89,7 +93,8 @@ window.onload = function () {
 }
 
 function start() {
-	timer = setInterval(function () { moverNave(); }, dt * 100);
+	timer = setInterval(function () { moverNave(); }, dt);
+	timerButton = setInterval(function(){actualizarColorBoton();},50);
 }
 
 /*****************Encender y apagar el motor de la nave*****************/
@@ -98,13 +103,15 @@ function motorOn() {
 	a = -g;
 	nave.src = "img/nave.svg";
 	timerFuel = setInterval(function () { actualizarFuel() }, 20);
+	encenderBoton();
 }
 
 function motorOff() {
 	a = g;
 	nave.src = "img/nave_sin_fuego.svg";
-	clearInterval(timerFuel);
 	motorRoto = false;
+	clearInterval(timerFuel);
+	apagarBoton();
 }
 
 /***************Calcula velocidad y altura de la nave y la aplica*********************/
@@ -114,45 +121,20 @@ function moverNave() {
 	altura += velocidad * dt;
 
 	let aReal = calcularAltura();
-	let vReal = calcularVelocidad(aReal);
 
-	marcadorVelocidad.innerHTML = vReal.toFixed(2);
-	marcadorAltura.innerHTML = (aReal.toFixed(0)) * 2;
+	marcadorAltura.innerHTML = aReal;
+	marcadorVelocidad.innerHTML = calcularVelocidad(aReal);
 
 	contenedorNave.style.top = comprobarLimites();
-	revisarFuel();
-}
 
-function revisarFuel() {
 	if (fuel <= 0) {
 		motorOff();
 	}
-}
 
-function comprobarLimites() {
-	if (altura < limiteInferior && altura > 0) {
-		return altura + "%";
-	}
-
-	if (altura < 0) {
-		velocidad = 0.1;
-		return 0 + '%';
-	}
-
-	else {
-		pararNave();
-		return limiteInferior + '%';
-	}
-}
-
-function pararNave() {
-	clearInterval(timer);
-	fuel = 0;
-	motorOff();
 }
 
 function calcularAltura() {
-	let alturaCalculada = limiteInferior - altura;
+	let alturaCalculada = (limiteInferior - altura).toFixed(0);
 
 	if ((limiteInferior - altura) <= 0) {
 		return 0;
@@ -165,7 +147,7 @@ function calcularVelocidad(aReal) {
 	let velocidadCalculada = transformarVelocidadPositiva(velocidad);
 	velocidadCalculada = ponerMarcadorVelocidadAZero(aReal, velocidadCalculada);
 
-	return velocidadCalculada;
+	return velocidadCalculada.toFixed(2);
 }
 
 function ponerMarcadorVelocidadAZero(aReal, vReal) {
@@ -182,6 +164,27 @@ function transformarVelocidadPositiva(velocidad) {
 	}
 
 	return velocidad;
+}
+
+function comprobarLimites() {
+	if (altura < limiteInferior && altura > 0) {
+		return altura + "%";
+	}
+
+	if (altura < limiteSuperior) {
+		velocidad = 0.1;
+		return limiteSuperior + '%';
+	}
+
+	else {
+		pararNave();
+		return limiteInferior + '%';
+	}
+}
+
+function pararNave() {
+	fuel = 0;
+	clearInterval(timer);
 }
 
 /*******************Actualiza marcadores de fuel y intentos******************/
@@ -260,7 +263,9 @@ function comprobarEstadoMotor() {
 /***************Dificultad***************/
 
 function cambiarDificultad(dif) {
+
 	borrarActivos(document.querySelectorAll('.modal__item'));
+	switchMenus(modalMenu, modalDificultad);
 
 	switch (dif) {
 		case "facil":
@@ -280,8 +285,7 @@ function cambiarDificultad(dif) {
 			botonImposible.classList.add('active');
 			break;
 	}
-
-	switchMenus(modalMenu, modalDificultad);
+	
 }
 
 function borrarActivos(generalClass){
@@ -290,6 +294,44 @@ function borrarActivos(generalClass){
 	}
 }
 
+/*Comprobar si el motor puede ser encendido*/
+function comprobarEncendido(){
+	motorRoto = comprobarEstadoMotor();
+
+	if(!motorRoto){
+		motorRoto=true;
+		motorOn();
+	}
+
+}
+
+function switchBoton(){
+	if(!botonEncendido && !comprobarEstadoMotor()){
+		botonEncendido = true;
+		motorOn();
+	}
+	else{
+		botonEncendido = false;
+		motorOff();
+	}
+}
+
+function encenderBoton(){
+	botonEncendido = true;
+}
+
+function apagarBoton(){
+	botonEncendido = false;
+}
+
+function actualizarColorBoton(){
+	if(botonEncendido){
+		botonEncender.classList.add('glow');
+	}
+	else{
+		botonEncender.classList.remove('glow');
+	}
+}
 /***************Utilidades***************/
 
 function switchMenus(menuA, menuB) {
