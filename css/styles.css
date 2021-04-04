@@ -70,7 +70,7 @@ body,html{
    height:125%;
 }
 
-/****************Utilidades******************************/
+/***************************Utilidades******************************/
 
 .flex{
     display:flex;
@@ -351,21 +351,35 @@ body,html{
 }
 
 @media screen and (max-width:994px){
+    
     .marcadores__texto{
         display:none;
     }
 
     .marcadores__item{
         font-size:22px;
+        display:block;
+        width:90px;
     }
+
+    .fuel{
+        display:flex;
+        flex-wrap:wrap;
+        margin-bottom:0;
+    }
+
+    .fuel svg{
+        flex-basis:100%;
+    } 
 
     .marcadores__fuel{
         height:10px;
         margin:10px 0;
     }
+
     .marcadores__fuel-negativo{
-        height:10px;
-        margin:0;
+        height:10px; 
+        margin:10px 0;
     }
 
     .marcadores__menu{
@@ -385,11 +399,6 @@ body,html{
 
     .reiniciar{
         top:138px;
-    }
-
-    .marcadores__item{
-        display:block;
-        width:90px;
     }
 
     .marcadores__menu{
