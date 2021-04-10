@@ -51,6 +51,7 @@ const botonFacil = document.querySelector('.facil');
 const botonNormal = document.querySelector('.normal');
 const botonDificil = document.querySelector('.dificil');
 const botonImposible = document.querySelector('.imposible');
+const botonEmpezar = document.querySelector('.empezar');
 
 /**********************************Modales********************************/
 
@@ -59,7 +60,11 @@ const modalMenu = document.querySelector('.menu');
 const modalInstrucciones = document.querySelector('.instrucciones__menu');
 const modalAbout = document.querySelector('.about__menu');
 const modalDificultad = document.querySelector('.dificultad__menu');
+const modalnicial = document.querySelector('.inicial__menu');
 
+/**************************Audios*********************/
+
+const musica = new Audio('music/bensound-scifi.mp3');
 
 /*****************Boton encender motor*******************/
 
@@ -87,15 +92,20 @@ botonFacil.addEventListener('click', function(){cambiarDificultad("facil")});
 botonNormal.addEventListener('click',function(){cambiarDificultad("normal")});
 botonDificil.addEventListener('click', function(){cambiarDificultad("dificil")});
 botonImposible.addEventListener('click',function(){ cambiarDificultad("imposible")});
-
-window.onload = function () {
-	start();
-}
-
+botonEmpezar.addEventListener('click',start);
+	
 function start() {
-	timer = setInterval(function () { moverNave(); }, dt);
+	musica.play();
+	modalnicial.classList.add('hidden');
+	timer = setInterval(function () { moverNave(); }, dt*100);
 	timerButton = setInterval(function(){actualizarColorBoton();},50);
 }
+
+/******************Loop musica****************/
+musica.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+}, false);
 
 /*****************Encender y apagar el motor de la nave*****************/
 

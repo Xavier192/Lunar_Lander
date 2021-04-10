@@ -17,7 +17,7 @@ ul{
     list-style:none;
 }
 
-li,svg,p,h1,span{
+li,svg,p,h1,span,button{
  color:#fff;   
 }
 
@@ -157,6 +157,20 @@ body,html{
 
 .acelerar:hover >  svg {
    color:var(--gris-menu);
+}
+
+/******************Copyright**********************/
+
+.copyright{
+    position:absolute;
+    bottom:50px;
+    left:65px;
+    background-color:var(--negro-menu);
+    padding:15px;
+    border-radius:12px;
+    opacity:.8;
+    z-index:9; 
+    font-size:1.2vw;
 }
 
 /*******************Marcadores********************/
@@ -392,8 +406,18 @@ body,html{
     .marcadores__menu{
         left:10px;
         top:10px;
+        
     }
 
+    .copyright{
+        left:10px;
+        bottom:10px;
+        font-size:8px;
+        text-orientation: upright;
+        writing-mode:vertical-lr;
+
+    }
+   
     .botonera > *{
         right:10px;
         padding:20px;
