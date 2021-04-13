@@ -111,7 +111,7 @@ function cerrarModalInicial(){
 
 function start() {
 	lastFrame = +new Date;
-	timer = setInterval(function () { moverNave(); }, 16);
+	timer = setInterval(function () { moverNave(); }, 0.06);
 	timerButton = setInterval(function(){actualizarColorBoton();},50);
 }
 
@@ -145,8 +145,8 @@ function moverNave() {
 	now = +new Date;
 	deltaTime = now-lastFrame;
 	
-	velocidad += a * deltaTime/200;
-	altura += velocidad * deltaTime/200;
+	velocidad += a * deltaTime/220;
+	altura += velocidad * deltaTime/220;
 	lastFrame = now;
 	
 	let aReal = calcularAltura();
