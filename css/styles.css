@@ -173,6 +173,15 @@ body,html{
     font-size:1.2vw;
 }
 
+.copyright a{
+    vertical-align:bottom;
+    margin-left:5px;
+}
+
+.copyright svg{
+    vertical-align: middle;
+    cursor:pointer;
+}
 /*******************Marcadores********************/
 
 .marcadores__menu{
@@ -305,12 +314,12 @@ body,html{
 /*Modal instrucciones*/
 
 .instrucciones__menu .modal__inner,
-.about__menu .modal__inner{
+.about__menu .modal__inner, .inicial__menu .modal__inner {
     width:600px;
     height:600px;
 }
 
-.instrucciones__menu .modal__inner{
+.instrucciones__menu .modal__inner, .inicial__menu .modal__inner{
     height:670px; 
 }
 
@@ -321,7 +330,7 @@ body,html{
    margin:25px 0;
 }
 
-.volver{
+.volver,.empezar{
     color:#fff;
     position:absolute;
     bottom:0;
@@ -469,7 +478,7 @@ body,html{
        display:none;
    }
 
-    .botonera>*{
+    .botonera > *{
         padding:10px;
     }
 
@@ -491,7 +500,7 @@ body,html{
         padding:40px;
     }
 
-    .modal__inner,.instrucciones__menu .modal__inner, .about__menu .modal__inner{
+    .modal__inner,.instrucciones__menu .modal__inner, .about__menu .modal__inner,.inicial__menu .modal__inner{
         height:100%; 
     }
 }

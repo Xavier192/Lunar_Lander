@@ -9,9 +9,10 @@ let motorRoto = false;
 let combustibleAgotado = false;
 let pause = false;
 let botonEncendido = false;
+let musicaActivada = true;
 //Variables de la nave.
 let g = 1.622;
-let dt = 0.016683;
+let dt = 0.0016683;
 let altura = 10;
 let velocidad = 0;
 let fuel = 100;
@@ -36,6 +37,7 @@ const marcadorAltura = document.getElementById("altura");
 const marcadorIntentos = document.getElementById("intentos");
 const marcadorFuel = document.querySelector('.marcadores__fuel');
 const marcadorFuelNegativo = document.querySelector('.marcadores__fuel-negativo');
+const vol = document.querySelector('.vol');
 
 /*****************************Botones Modales****************************/
 
@@ -65,6 +67,8 @@ const modalnicial = document.querySelector('.inicial__menu');
 /**************************Audios*********************/
 
 const musica = new Audio('music/bensound-scifi.mp3');
+musica.volume=0.3;
+
 
 /*****************Boton encender motor*******************/
 
@@ -92,16 +96,23 @@ botonFacil.addEventListener('click', function(){cambiarDificultad("facil")});
 botonNormal.addEventListener('click',function(){cambiarDificultad("normal")});
 botonDificil.addEventListener('click', function(){cambiarDificultad("dificil")});
 botonImposible.addEventListener('click',function(){ cambiarDificultad("imposible")});
-botonEmpezar.addEventListener('click',start);
-	
-function start() {
+botonEmpezar.addEventListener('click',cerrarModalInicial);
+vol.addEventListener('click',switchVolumen);
+
+
+function cerrarModalInicial(){
 	musica.play();
 	modalnicial.classList.add('hidden');
-	timer = setInterval(function () { moverNave(); }, dt*100);
+	start();
+}
+
+function start() {
+	timer = setInterval(function () { moverNave(); }, dt*800);
 	timerButton = setInterval(function(){actualizarColorBoton();},50);
 }
 
-/******************Loop musica****************/
+
+/******************Loop musica y sonido****************/
 musica.addEventListener('ended', function() {
     this.currentTime = 0;
     this.play();
@@ -127,9 +138,9 @@ function motorOff() {
 /***************Calcula velocidad y altura de la nave y la aplica*********************/
 
 function moverNave() {
-	velocidad += a * dt;
-	altura += velocidad * dt;
-
+	velocidad += a * dt*10;
+	altura += velocidad * dt*10;
+	console.log('hola');
 	let aReal = calcularAltura();
 
 	marcadorAltura.innerHTML = aReal;
@@ -302,6 +313,32 @@ function borrarActivos(generalClass){
 	for(let activo= 0 ; activo<generalClass.length ; activo++){
 		generalClass[activo].classList.remove('active');
 	}
+}
+
+/*******************Volumen********************/
+
+function switchVolumen(){
+	if(musicaActivada){
+		musica.pause();
+		musica.currentTime=0;
+		musicaActivada=false;
+		vol.innerHTML = '';
+		vol.appendChild(crearIcono('fa-volume-mute'));
+	}
+	else{
+		musica.play();
+		musicaActivada=true;
+		vol.innerHTML = '';
+		vol.appendChild(crearIcono('fa-volume-up'));
+	}
+}
+
+function crearIcono(clase){
+	let icono = document.createElement('i');
+	icono.classList.add('fa');
+	icono.classList.add(clase);
+
+	return icono;
 }
 
 /*Comprobar si el motor puede ser encendido*/

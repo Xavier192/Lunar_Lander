@@ -52,7 +52,8 @@
                 </li>
             </ul>
             <div class="copyright">
-               <a href="https://www.bensound.com" target="_blank"> Music: www.bensound.com</a>
+                <span class="vol"><i class="fas fa-volume-up"></i></span>
+                <a href="https://www.bensound.com" target="_blank"> www.bensound.com</a>
             </div>
         </div>
         <!--Naves-->
@@ -87,15 +88,7 @@
         <img src="img/luna_movil.svg" alt="luna_movil" class="luna__movil">
     </div>
 
-    <!--Modal inicial-->
-    <div class="modal inicial__menu">
-        <div class="modal__inner">
-            <div class="modal__cuerpo">
-                <button type="button" class="modal__item empezar">¡Empezar!</button>
-            </div>
-            
-        </div>
-    </div>
+
 
     <!--Modal menu-->
     <div class="modal menu hidden">
@@ -106,6 +99,40 @@
                 <li class="modal__item about"><a href="#" class="modal__link">About</a></li>
                 <li class="modal__item dificultad"><a href="#" class="modal__link">Dificultad</a></li>
             </ul>
+        </div>
+    </div>
+
+    <!--Modal inicial-->
+    <div class="modal inicial__menu">
+        <div class="modal__inner">
+            <div class="modal__cuerpo">
+                <h1 class="modal__titulo">Bienvenido a Lunar Lander</h1>
+                <div class="modal__seccion">
+                    <p class="modal__parrafo">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la
+                        luna. Para evitar
+                        accidentarse a causa de un choque fatal contra la luna se tendrá que presionar el espacio o el
+                        botón
+                        de acelerar. En el caso de que no se acelere lo suficiente o se termine el
+                        combustible antes de aterrizar la nave se estrellará. </p>
+                </div>
+                <div class="modal__seccion">
+                    <div class="pause flex"><i class="fas fa-pause"></i></div>
+                    <span class="modal__texto"> Sirve para pausar el juego y mostrar las opciones.</span>
+                </div>
+                <div class="modal__seccion">
+                    <div class="reiniciar flex">
+                        <i class="fas fa-redo"></i>
+                    </div>
+                    <span class="modal__texto">Sirve para reiniciar la partida.</span>
+                </div>
+                <div class="modal__seccion">
+                    <div class="modal__acelerar flex">
+                        <i class="fas fa-power-off"></i>
+                    </div>
+                    <span class="modal__texto">Sirve para encender o apagar el motor.</span>
+                </div>
+                <button type="button" class="modal__item empezar">¡Empezar!</button>
+            </div>
         </div>
     </div>
 
@@ -139,7 +166,6 @@
                     <span class="modal__texto">Sirve para encender o apagar el motor.</span>
                 </div>
                 <button type="button" class="modal__item volver bIns">Volver</button>
-
             </div>
         </div>
     </div>
