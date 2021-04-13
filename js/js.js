@@ -13,6 +13,9 @@ let musicaActivada = true;
 //Variables de la nave.
 let g = 1.622;
 let dt = 0.0016683;
+let deltaTime = 0;
+let now = null;
+let lastFrame = null; 
 let altura = 10;
 let velocidad = 0;
 let fuel = 100;
@@ -107,7 +110,8 @@ function cerrarModalInicial(){
 }
 
 function start() {
-	timer = setInterval(function () { moverNave(); }, dt*800);
+	lastFrame = +new Date;
+	timer = setInterval(function () { moverNave(); }, 16);
 	timerButton = setInterval(function(){actualizarColorBoton();},50);
 }
 
@@ -138,9 +142,13 @@ function motorOff() {
 /***************Calcula velocidad y altura de la nave y la aplica*********************/
 
 function moverNave() {
-	velocidad += a * dt*10;
-	altura += velocidad * dt*10;
-	console.log('hola');
+	now = +new Date;
+	deltaTime = now-lastFrame;
+	
+	velocidad += a * deltaTime/200;
+	altura += velocidad * deltaTime/200;
+	lastFrame = now;
+	
 	let aReal = calcularAltura();
 
 	marcadorAltura.innerHTML = aReal;
