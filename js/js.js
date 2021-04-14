@@ -10,12 +10,14 @@ let combustibleAgotado = false;
 let pause = false;
 let botonEncendido = false;
 let musicaActivada = true;
+let naveEstrellada = false;
 //Variables de la nave.
 let g = 1.622;
 let dt = 0.0016683;
+let vImpacto = 5;
 let deltaTime = 0;
 let now = null;
-let lastFrame = null; 
+let lastFrame = null;
 let altura = 10;
 let velocidad = 0;
 let fuel = 100;
@@ -70,15 +72,18 @@ const modalnicial = document.querySelector('.inicial__menu');
 /**************************Audios*********************/
 
 const musica = new Audio('music/bensound-scifi.mp3');
-musica.volume=0.3;
-
+const crashSound = new Audio('music/explosion.mp3');
+musica.volume = 0.3;
+crashSound.volume = 0.2;
 
 /*****************Boton encender motor*******************/
 
 const botonEncender = document.querySelector('.acelerar');
 
 /****************Listeners apretar o soltar tecla************************/
-document.onkeyup = motorOff;
+document.onkeyup = function(){
+	comprobarApagadoMotor();
+} 
 
 document.onkeydown = function () {
 	comprobarEncendido();
@@ -86,7 +91,7 @@ document.onkeydown = function () {
 
 /************************Listeners modales**********************/
 
-botonEncender.addEventListener('click',switchBoton);
+botonEncender.addEventListener('click', switchBoton);
 botonPausa.addEventListener('click', pausa);
 botonReiniciar.addEventListener('click', reiniciar);
 botonContinuar.addEventListener('click', reanudar);
@@ -95,15 +100,15 @@ botonAbout.addEventListener('click', mostrarAbout);
 botonDificultad.addEventListener('click', mostrarDificultad);
 botonVolverAbout.addEventListener('click', volverAb);
 botonVolverInst.addEventListener('click', volverIn);
-botonFacil.addEventListener('click', function(){cambiarDificultad("facil")});
-botonNormal.addEventListener('click',function(){cambiarDificultad("normal")});
-botonDificil.addEventListener('click', function(){cambiarDificultad("dificil")});
-botonImposible.addEventListener('click',function(){ cambiarDificultad("imposible")});
-botonEmpezar.addEventListener('click',cerrarModalInicial);
-vol.addEventListener('click',switchVolumen);
+botonFacil.addEventListener('click', function () { cambiarDificultad("facil") });
+botonNormal.addEventListener('click', function () { cambiarDificultad("normal") });
+botonDificil.addEventListener('click', function () { cambiarDificultad("dificil") });
+botonImposible.addEventListener('click', function () { cambiarDificultad("imposible") });
+botonEmpezar.addEventListener('click', cerrarModalInicial);
+vol.addEventListener('click', switchVolumen);
 
 
-function cerrarModalInicial(){
+function cerrarModalInicial() {
 	musica.play();
 	modalnicial.classList.add('hidden');
 	start();
@@ -112,14 +117,15 @@ function cerrarModalInicial(){
 function start() {
 	lastFrame = +new Date;
 	timer = setInterval(function () { moverNave(); }, 0.06);
-	timerButton = setInterval(function(){actualizarColorBoton();},50);
+	timerButton = setInterval(function () { actualizarColorBoton(); }, 50);
 }
 
 
 /******************Loop musica y sonido****************/
-musica.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
+
+musica.addEventListener('ended', function () {
+	this.currentTime = 0;
+	this.play();
 }, false);
 
 /*****************Encender y apagar el motor de la nave*****************/
@@ -138,27 +144,22 @@ function motorOff() {
 	clearInterval(timerFuel);
 	apagarBoton();
 }
-
 /***************Calcula velocidad y altura de la nave y la aplica*********************/
 
 function moverNave() {
 	now = +new Date;
-	deltaTime = now-lastFrame;
-	
-	velocidad += a * deltaTime/220;
-	altura += velocidad * deltaTime/220;
+	deltaTime = now - lastFrame;
+
+	velocidad += a * deltaTime / 220;
+	altura += velocidad * deltaTime / 220;
 	lastFrame = now;
-	
+
 	let aReal = calcularAltura();
 
 	marcadorAltura.innerHTML = aReal;
 	marcadorVelocidad.innerHTML = calcularVelocidad(aReal);
 
 	contenedorNave.style.top = comprobarLimites();
-
-	if (fuel <= 0) {
-		motorOff();
-	}
 
 }
 
@@ -188,11 +189,7 @@ function ponerMarcadorVelocidadAZero(aReal, vReal) {
 }
 
 function transformarVelocidadPositiva(velocidad) {
-	if (velocidad < 0) {
-		return -velocidad;
-	}
-
-	return velocidad;
+	return Math.abs(velocidad);
 }
 
 function comprobarLimites() {
@@ -212,17 +209,28 @@ function comprobarLimites() {
 }
 
 function pararNave() {
-	fuel = 0;
 	clearInterval(timer);
+	fuel=0;
+	apagarBoton();
+
+	if (Math.abs(velocidad) > vImpacto) {
+		nave.src = "img/crash.gif";
+		naveEstrellada=true;
+		crashSound.play();
+	}
 }
 
 /*******************Actualiza marcadores de fuel y intentos******************/
 
 function actualizarFuel() {
 	fuel -= dificultad;
-
+	
 	marcadorFuel.style.width = fuel + '%';
 	marcadorFuelNegativo.style.width = 100 - fuel + '%';
+
+	if (fuel <= 0) {
+		comprobarApagadoMotor();
+	}
 }
 
 function incrementarMarcador() {
@@ -254,8 +262,9 @@ function reiniciar() {
 	altura = 10;
 	fuel = 100;
 	velocidad = 0;
+	naveEstrellada=false;
 	actualizarFuel();
-
+	nave.src="img/nave_sin_fuego.svg";
 }
 
 function mostrarInstrucciones() {
@@ -289,6 +298,17 @@ function comprobarEstadoMotor() {
 	return true;
 }
 
+function comprobarApagadoMotor(){
+	if(!naveEstrellada){
+		motorOff();
+	}
+	else{
+		clearInterval(timerFuel);
+		a=g;
+		motorRoto=false;
+	}
+}
+
 /***************Dificultad***************/
 
 function cambiarDificultad(dif) {
@@ -299,49 +319,53 @@ function cambiarDificultad(dif) {
 	switch (dif) {
 		case "facil":
 			dificultad = 0.3;
+			vImpacto = 5;
 			botonFacil.classList.add('active');
 			break;
 		case "normal":
+			vImpacto = 4;
 			dificultad = 0.4;
 			botonNormal.classList.add('active');
 			break;
 		case "dificil":
+			vImpacto = 3;
 			dificultad = 0.6;
 			botonDificil.classList.add('active');
 			break;
 		case "imposible":
+			vImpacto = 2;
 			dificultad = 0.8;
 			botonImposible.classList.add('active');
 			break;
 	}
-	
+
 }
 
-function borrarActivos(generalClass){
-	for(let activo= 0 ; activo<generalClass.length ; activo++){
+function borrarActivos(generalClass) {
+	for (let activo = 0; activo < generalClass.length; activo++) {
 		generalClass[activo].classList.remove('active');
 	}
 }
 
 /*******************Volumen********************/
 
-function switchVolumen(){
-	if(musicaActivada){
+function switchVolumen() {
+	if (musicaActivada) {
 		musica.pause();
-		musica.currentTime=0;
-		musicaActivada=false;
+		musica.currentTime = 0;
+		musicaActivada = false;
 		vol.innerHTML = '';
 		vol.appendChild(crearIcono('fa-volume-mute'));
 	}
-	else{
+	else {
 		musica.play();
-		musicaActivada=true;
+		musicaActivada = true;
 		vol.innerHTML = '';
 		vol.appendChild(crearIcono('fa-volume-up'));
 	}
 }
 
-function crearIcono(clase){
+function crearIcono(clase) {
 	let icono = document.createElement('i');
 	icono.classList.add('fa');
 	icono.classList.add(clase);
@@ -350,40 +374,40 @@ function crearIcono(clase){
 }
 
 /*Comprobar si el motor puede ser encendido*/
-function comprobarEncendido(){
+function comprobarEncendido() {
 	motorRoto = comprobarEstadoMotor();
 
-	if(!motorRoto){
-		motorRoto=true;
+	if (!motorRoto) {
+		motorRoto = true;
 		motorOn();
 	}
 
 }
 
-function switchBoton(){
-	if(!botonEncendido && !comprobarEstadoMotor()){
+function switchBoton() {
+	if (!botonEncendido && !comprobarEstadoMotor()) {
 		botonEncendido = true;
 		motorOn();
 	}
-	else{
+	else {
 		botonEncendido = false;
-		motorOff();
+		comprobarApagadoMotor();
 	}
 }
 
-function encenderBoton(){
+function encenderBoton() {
 	botonEncendido = true;
 }
 
-function apagarBoton(){
+function apagarBoton() {
 	botonEncendido = false;
 }
 
-function actualizarColorBoton(){
-	if(botonEncendido){
+function actualizarColorBoton() {
+	if (botonEncendido) {
 		botonEncender.classList.add('glow');
 	}
-	else{
+	else {
 		botonEncender.classList.remove('glow');
 	}
 }
