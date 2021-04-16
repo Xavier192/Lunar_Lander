@@ -103,6 +103,10 @@ body,html{
     opacity:.8;
 }
 
+.borde-fino{
+    border:1px solid #fff;
+}
+
 /******************Botonera*********************/
 
 .botonera > *{
@@ -311,6 +315,10 @@ body,html{
     display:none;
 }
 
+.crash .modal__inner{
+    margin-top:100px;
+}
+
 /*Modal instrucciones*/
 
 .instrucciones__menu .modal__inner,
@@ -324,10 +332,12 @@ body,html{
 }
 
 
-.modal__inner p{
+.modal__parrafo{
    padding:15px;
-   border:1px solid #fff;
    margin:25px 0;
+}
+.modal__subtitulo{
+    font-size:1.5rem;
 }
 
 .volver,.empezar{

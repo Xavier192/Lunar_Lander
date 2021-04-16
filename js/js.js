@@ -13,7 +13,6 @@ let musicaActivada = true;
 let naveEstrellada = false;
 //Variables de la nave.
 let g = 1.622;
-let dt = 0.0016683;
 let vImpacto = 5;
 let deltaTime = 0;
 let now = null;
@@ -44,6 +43,11 @@ const marcadorFuel = document.querySelector('.marcadores__fuel');
 const marcadorFuelNegativo = document.querySelector('.marcadores__fuel-negativo');
 const vol = document.querySelector('.vol');
 
+/***************Objetos estadísticas modal colisión*****************/
+
+velocidadImpacto = document.querySelector('.modal__v-impacto');
+gasolinaRestante = document.querySelector('.modal__gasolina');
+
 /*****************************Botones Modales****************************/
 
 const botonPausa = document.querySelector('.pause');
@@ -59,6 +63,7 @@ const botonNormal = document.querySelector('.normal');
 const botonDificil = document.querySelector('.dificil');
 const botonImposible = document.querySelector('.imposible');
 const botonEmpezar = document.querySelector('.empezar');
+const botonReiniciarModal = document.querySelectorAll('.reiniciar__modal');
 
 /**********************************Modales********************************/
 
@@ -68,6 +73,8 @@ const modalInstrucciones = document.querySelector('.instrucciones__menu');
 const modalAbout = document.querySelector('.about__menu');
 const modalDificultad = document.querySelector('.dificultad__menu');
 const modalnicial = document.querySelector('.inicial__menu');
+const modalCrash = document.querySelector('.crash__menu');
+const modalVictoria = document.querySelector('.victory__menu');
 
 /**************************Audios*********************/
 
@@ -105,8 +112,8 @@ botonNormal.addEventListener('click', function () { cambiarDificultad("normal") 
 botonDificil.addEventListener('click', function () { cambiarDificultad("dificil") });
 botonImposible.addEventListener('click', function () { cambiarDificultad("imposible") });
 botonEmpezar.addEventListener('click', cerrarModalInicial);
+botonReiniciarModal.forEach(function(boton){boton.addEventListener('click',function(boton){reiniciarModal(boton)})});
 vol.addEventListener('click', switchVolumen);
-
 
 function cerrarModalInicial() {
 	musica.play();
@@ -116,7 +123,7 @@ function cerrarModalInicial() {
 
 function start() {
 	lastFrame = +new Date;
-	timer = setInterval(function () { moverNave(); }, 0.06);
+	timer = setInterval(function () { moverNave(); }, 1);
 	timerButton = setInterval(function () { actualizarColorBoton(); }, 50);
 }
 
@@ -149,7 +156,6 @@ function motorOff() {
 function moverNave() {
 	now = +new Date;
 	deltaTime = now - lastFrame;
-
 	velocidad += a * deltaTime / 220;
 	altura += velocidad * deltaTime / 220;
 	lastFrame = now;
@@ -210,35 +216,64 @@ function comprobarLimites() {
 
 function pararNave() {
 	clearInterval(timer);
-	fuel=0;
 	apagarBoton();
+	comprobarNaveEstrellada();
+}
+
+function comprobarNaveEstrellada(){
 
 	if (Math.abs(velocidad) > vImpacto) {
 		nave.src = "img/crash.gif";
+		incrementarMarcador();
 		naveEstrellada=true;
 		crashSound.play();
+		modalCrash.classList.remove('hidden');
+		ponerEstadisticas();
 	}
+
+	else{
+		modalVictoria.classList.remove('hidden');
+	}
+
+	fuel=0;
+}
+
+function ponerEstadisticas(){
+	gasolinaRestante.innerHTML = fuel;
+	velocidadImpacto.innerHTML = velocidad.toFixed(2);
 }
 
 /*******************Actualiza marcadores de fuel y intentos******************/
 
 function actualizarFuel() {
 	fuel -= dificultad;
-	
-	marcadorFuel.style.width = fuel + '%';
-	marcadorFuelNegativo.style.width = 100 - fuel + '%';
 
 	if (fuel <= 0) {
 		comprobarApagadoMotor();
 	}
+	
+	marcadorFuel.style.width = fuel + '%';
+	marcadorFuelNegativo.style.width = 100 - fuel + '%';
+
+	
 }
 
 function incrementarMarcador() {
 	intentos++;
-	marcadorIntentos.innerHTML = int;
+	marcadorIntentos.innerHTML = intentos;
 }
 
 /***************************Pausa y reiniciar******************************/
+
+function reiniciarModal(boton){
+	reiniciar();
+	if(boton.srcElement.className === 'modal__item reiniciar__modal de'){
+		modalCrash.classList.add('hidden');
+	}
+	else{
+		modalVictoria.classList.add('hidden');
+	}
+}
 
 function pausa() {
 	modal.classList.remove('hidden');

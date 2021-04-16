@@ -108,7 +108,7 @@
             <div class="modal__cuerpo">
                 <h1 class="modal__titulo">Bienvenido a Lunar Lander</h1>
                 <div class="modal__seccion">
-                    <p class="modal__parrafo">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la
+                    <p class="modal__parrafo borde-fino">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la
                         luna. Para evitar
                         accidentarse a causa de un choque fatal contra la luna se tendrá que presionar el espacio o el
                         botón
@@ -142,7 +142,7 @@
             <div class="modal__cuerpo">
                 <h1 class="modal__titulo">Instrucciones</h1>
                 <div class="modal__seccion">
-                    <p class="modal__parrafo">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la
+                    <p class="modal__parrafo borde-fino">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la
                         luna. Para evitar
                         accidentarse a causa de un choque fatal contra la luna se tendrá que presionar el espacio o el
                         botón
@@ -193,6 +193,31 @@
                 <li class="modal__item dificil"><a href="#" class="modal__link">Difícil</a></li>
                 <li class="modal__item imposible"><a href="#" class="modal__link">Imposible</a></li>
             </ul>
+        </div>
+    </div>
+
+    <!--Pantalla derrota-->
+    <div class="modal hidden crash crash__menu">
+        <div class="modal__inner">
+            <div class="modal__cuerpo">
+                <h1 class="modal__titulo">Te has estrellado</h1>
+                <p class="modal__parrafo modal__subtitulo">Estadísticas</p>
+                <p class="modal__parrafo">Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>
+                <p class="modal__parrafo">Supervivientes: 0.</p>
+                <p class="modal__parrafo">Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>
+                <button type="button" class="modal__item reiniciar__modal de">Reiniciar</button>
+            </div>
+        </div>
+    </div>
+    <!--Pantalla victoria-->
+    <div class="modal hidden crash victory__menu">
+        <div class="modal__inner">
+            <div class="modal__cuerpo">
+                <h1 class="modal__titulo">¡Misión cumplida!</h1>
+                <p class="modal__parrafo">Has alunizado con éxito. Toda tu tripulación aplaude tu gran proeza.</p>
+            <button type="button" class="modal__item reiniciar__modal vi">Reiniciar</button>
+            </div>
+
         </div>
     </div>
 </body>
