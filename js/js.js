@@ -28,7 +28,7 @@ let dificultad = 0.5;
 
 const contenedorNave = document.querySelector(".nave__contenedor");
 const nave = document.querySelector(".nave__pj");
-
+const tiempo = document.querySelector(".tiempo");
 /****************Limites*****************/
 
 const limiteSuperior = 0;
@@ -118,10 +118,25 @@ vol.addEventListener('click', switchVolumen);
 function cerrarModalInicial() {
 	musica.play();
 	modalnicial.classList.add('hidden');
+	esperarTresSegundos();
+}
+
+async function esperarTresSegundos(){
+	
+	for(let seconds=2 ; seconds>-1 ; seconds--){
+		await sleep(1000);
+		tiempo.innerHTML=''+seconds;
+	}
+
 	start();
 }
 
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function start() {
+	tiempo.innerHTML='';
 	lastFrame = +new Date;
 	timer = setInterval(function () { moverNave(); }, 1);
 	timerButton = setInterval(function () { actualizarColorBoton(); }, 50);

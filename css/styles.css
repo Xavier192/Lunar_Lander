@@ -245,12 +245,27 @@ body,html{
     position:absolute;
     text-align:center;
     height:20%;
-    top:34.1%;
+    top:10.1%;
     width:100%;
 }
 
 .nave__pj{
     height:100%;
+}
+
+/*Marcador tiempo*/
+
+.nave__marcador-tiempo{
+    position:absolute;
+    z-index:99;
+    width:100%;
+    height:100%;
+
+}
+.tiempo{
+    margin:auto;
+    font-size:100px;
+    text-shadow:1px 1px 10px #000;
 }
 
 /****************************Modales***************************/
