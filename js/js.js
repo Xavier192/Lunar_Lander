@@ -230,32 +230,36 @@ function comprobarLimites() {
 }
 
 function pararNave() {
+	let impacto = Math.abs(velocidad) > vImpacto;
+
 	clearInterval(timer);
 	apagarBoton();
-	comprobarNaveEstrellada();
+	ponerEstadisticas(impacto);
+	fuel=0;
+	mostrarModalCrash(impacto);
 }
 
-function comprobarNaveEstrellada(){
-
-	if (Math.abs(velocidad) > vImpacto) {
+async function ponerEstadisticas(impacto){
+	if(impacto){
 		nave.src = "img/crash.gif";
 		incrementarMarcador();
 		naveEstrellada=true;
 		crashSound.play();
+		gasolinaRestante.innerHTML = fuel.toFixed(1);
+		velocidadImpacto.innerHTML = velocidad.toFixed(2);
+	}
+}
+
+async function mostrarModalCrash(impacto){
+	if(impacto){
+		await sleep(1500);
 		modalCrash.classList.remove('hidden');
-		ponerEstadisticas();
 	}
 
 	else{
+		await sleep(400);
 		modalVictoria.classList.remove('hidden');
 	}
-
-	fuel=0;
-}
-
-function ponerEstadisticas(){
-	gasolinaRestante.innerHTML = fuel;
-	velocidadImpacto.innerHTML = velocidad.toFixed(2);
 }
 
 /*******************Actualiza marcadores de fuel y intentos******************/
