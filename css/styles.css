@@ -497,6 +497,9 @@ body,html{
 }
 
 @media screen and (max-width:500px){
+    .grid{
+        height:90vh;
+    }
 
    .luna__movil{
        display:inline-block;
@@ -527,6 +530,7 @@ body,html{
 
     .acelerar{
         padding:40px;
+        bottom:0;
     }
 
     .modal__inner,.instrucciones__menu .modal__inner, .about__menu .modal__inner,.inicial__menu .modal__inner{
