@@ -4,6 +4,7 @@
 let timer = null;
 let timerFuel = null;
 let timerButton = null;
+let modales = null;
 //Bloqueadores de acciones
 let motorRoto = false;
 let combustibleAgotado = false;
@@ -22,14 +23,113 @@ let velocidad = 0;
 let fuel = 100;
 let intentos = 0;
 let a = g;
-let dificultad = 0.5;
+let dificultad = 0.3;
+
+/***************************HTML modals**************************/
+
+const modalMenu = '<ul class="modal__menu">'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Continuar</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Instrucciones</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">About</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Dificultad</a></li>'
+	+ '</ul>';
+
+const modalInstrucciones = '<div class="modal__cuerpo">'
+	+ '<h1 class="modal__titulo">Instrucciones</h1>'
+	+ '<div class="modal__seccion">'
+	+ '<p class="modal__parrafo borde-fino">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la'
+	+ 'luna. Para evitar'
+	+ 'accidentarse a causa de un choque fatal contra la luna se tendrá que presionar el espacio o el'
+	+ 'botón de acelerar. En el caso de que no se acelere lo suficiente o se termine el'
+	+ 'combustible antes de aterrizar la nave se estrellará. </p>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="pause flex"><i class="fas fa-pause"></i></div>'
+	+ '<span class="modal__texto"> Sirve para pausar el juego y mostrar las opciones.</span>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="reiniciar flex">'
+	+ '<i class="fas fa-redo"></i>'
+	+ '</div>'
+	+ '<span class="modal__texto">Sirve para reiniciar la partida.</span>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="modal__acelerar flex">'
+	+ '<i class="fas fa-power-off"></i>'
+	+ '</div>'
+	+ '<span class="modal__texto">Sirve para encender o apagar el motor.</span>'
+	+ '</div>'
+	+ '<button type="button" class="volver boton-modal w-100">Volver</button>'
+	+ '</div>';
+
+const modalAbout = '<div class="modal__cuerpo">'
+	+ '<h1 class="modal__titulo">About</h1>'
+	+ '<p class="modal__parrafo">Este proyecto ha sido realizado por un alumno de primero de DAM como proyecto'
+	+ 'para la asignatura de Lenguage de marcas. </p>'
+	+ '<br>'
+	+ '<p>Nombre: Xavier Lliteras Morell. </p>'
+	+ '<p>Fecha: 29/03/2021</p>'
+	+ '<button type="button" class="volver boton-modal w-100">Volver</button>'
+	+ '</div>';
+
+const modalDificultad = '<ul class="modal__menu">'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Fácil</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Normal</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Difícil</a></li>'
+	+ '<li class="modal__item"><a href="#" class="modal__link boton-modal">Imposible</a></li>'
+	+ '</ul>';
+
+const modalDerrota = '<div class="modal__cuerpo">'
+	+ '<h1 class="modal__titulo">Te has estrellado</h1>'
+	+ '<p class="modal__parrafo modal__subtitulo">Estadísticas</p>'
+	+ '<p class="modal__parrafo">Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>'
+	+ '<p class="modal__parrafo">Supervivientes: 0.</p>'
+	+ '<p class="modal__parrafo">Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>'
+	+ '<button type="button" class="boton-modal w-50 reiniciar-modal">Reiniciar</button>'
+	+ '</div>';
+
+const modalVictoria = '<div class="modal__cuerpo">'
+	+ '<h1 class="modal__titulo">¡Misión cumplida!</h1>'
+	+ '<p class="modal__parrafo">Has alunizado con éxito. Toda tu tripulación aplaude tu gran proeza.</p>'
+	+ '<button type="button" class="boton-modal w-50 reiniciar-modal">Reiniciar</button>'
+	+ '</div>';
+
+const modalInicial = '<div class="modal__cuerpo">'
+	+ '<h1 class="modal__titulo">Bienvenido a Lunar Lander</h1>'
+	+ '<div class="modal__seccion">'
+	+ '<p class="modal__parrafo borde-fino">La nave empieza en suspensión y va cayendo cada vez más rápido hacía la'
+	+ 'luna. Para evitar'
+	+ 'accidentarse a causa de un choque fatal contra la luna se tendrá que presionar el espacio o el'
+	+ 'botón'
+	+ 'de acelerar. En el caso de que no se acelere lo suficiente o se termine el'
+	+ 'combustible antes de aterrizar la nave se estrellará. </p>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="pause flex"><i class="fas fa-pause"></i></div>'
+	+ '<span class="modal__texto"> Sirve para pausar el juego y mostrar las opciones.</span>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="reiniciar flex">'
+	+ '<i class="fas fa-redo"></i>'
+	+ '</div>'
+	+ '<span class="modal__texto">Sirve para reiniciar la partida.</span>'
+	+ '</div>'
+	+ '<div class="modal__seccion">'
+	+ '<div class="modal__acelerar flex">'
+	+ '<i class="fas fa-power-off"></i>'
+	+ '</div>'
+	+ '	<span class="modal__texto">Sirve para encender o apagar el motor.</span>'
+	+ '</div>'
+	+ '<button type="button" class="boton-modal empezar w-100">¡Empezar!</button>'
+	+ '</div>';
 
 /************Objeto nave***********/
 
 const contenedorNave = document.querySelector(".nave__contenedor");
 const nave = document.querySelector(".nave__pj");
 const tiempo = document.querySelector(".tiempo");
-/****************Limites*****************/
+
+/****************Limites colisión*****************/
 
 const limiteSuperior = 0;
 const limiteInferior = 65.9;
@@ -43,38 +143,20 @@ const marcadorFuel = document.querySelector('.marcadores__fuel');
 const marcadorFuelNegativo = document.querySelector('.marcadores__fuel-negativo');
 const vol = document.querySelector('.vol');
 
-/***************Objetos estadísticas modal colisión*****************/
-
-velocidadImpacto = document.querySelector('.modal__v-impacto');
-gasolinaRestante = document.querySelector('.modal__gasolina');
-
 /*****************************Botones Modales****************************/
 
 const botonPausa = document.querySelector('.pause');
 const botonReiniciar = document.querySelector('.reiniciar');
-const botonContinuar = document.querySelector('.continuar');
-const botonInstrucciones = document.querySelector('.instrucciones');
-const botonAbout = document.querySelector('.about');
-const botonDificultad = document.querySelector('.dificultad');
-const botonVolverAbout = document.querySelector('.bAbout');
-const botonVolverInst = document.querySelector('.bIns');
-const botonFacil = document.querySelector('.facil');
-const botonNormal = document.querySelector('.normal');
-const botonDificil = document.querySelector('.dificil');
-const botonImposible = document.querySelector('.imposible');
-const botonEmpezar = document.querySelector('.empezar');
-const botonReiniciarModal = document.querySelectorAll('.reiniciar__modal');
+
+/*****************************Objetos Marcador Modales*******************/
+
+velocidadImpacto = null;
+gasolinaRestante = null;
 
 /**********************************Modales********************************/
 
 const modal = document.querySelector('.modal');
-const modalMenu = document.querySelector('.menu');
-const modalInstrucciones = document.querySelector('.instrucciones__menu');
-const modalAbout = document.querySelector('.about__menu');
-const modalDificultad = document.querySelector('.dificultad__menu');
-const modalnicial = document.querySelector('.inicial__menu');
-const modalCrash = document.querySelector('.crash__menu');
-const modalVictoria = document.querySelector('.victory__menu');
+const modalInner = document.querySelector('.modal__inner');
 
 /**************************Audios*********************/
 
@@ -88,9 +170,9 @@ crashSound.volume = 0.2;
 const botonEncender = document.querySelector('.acelerar');
 
 /****************Listeners apretar o soltar tecla************************/
-document.onkeyup = function(){
+document.onkeyup = function () {
 	comprobarApagadoMotor();
-} 
+}
 
 document.onkeydown = function () {
 	comprobarEncendido();
@@ -101,31 +183,26 @@ document.onkeydown = function () {
 botonEncender.addEventListener('click', switchBoton);
 botonPausa.addEventListener('click', pausa);
 botonReiniciar.addEventListener('click', reiniciar);
-botonContinuar.addEventListener('click', reanudar);
-botonInstrucciones.addEventListener('click', mostrarInstrucciones);
-botonAbout.addEventListener('click', mostrarAbout);
-botonDificultad.addEventListener('click', mostrarDificultad);
-botonVolverAbout.addEventListener('click', volverAb);
-botonVolverInst.addEventListener('click', volverIn);
-botonFacil.addEventListener('click', function () { cambiarDificultad("facil") });
-botonNormal.addEventListener('click', function () { cambiarDificultad("normal") });
-botonDificil.addEventListener('click', function () { cambiarDificultad("dificil") });
-botonImposible.addEventListener('click', function () { cambiarDificultad("imposible") });
-botonEmpezar.addEventListener('click', cerrarModalInicial);
-botonReiniciarModal.forEach(function(boton){boton.addEventListener('click',function(boton){reiniciarModal(boton)})});
 vol.addEventListener('click', switchVolumen);
+
+/***********************Inicia el programa************************/
+
+window.onload = function () {
+	modalInner.innerHTML = modalInicial;
+	document.querySelector('.empezar').addEventListener('click',cerrarModalInicial);
+}
 
 function cerrarModalInicial() {
 	musica.play();
-	modalnicial.classList.add('hidden');
+	modal.classList.add('hidden');
 	esperarTresSegundos();
 }
 
-async function esperarTresSegundos(){
-	
-	for(let seconds=2 ; seconds>-1 ; seconds--){
+async function esperarTresSegundos() {
+
+	for (let seconds = 2; seconds > -1; seconds--) {
 		await sleep(1000);
-		tiempo.innerHTML=''+seconds;
+		tiempo.innerHTML = '' + seconds;
 	}
 
 	start();
@@ -136,7 +213,7 @@ function sleep(ms) {
 }
 
 function start() {
-	tiempo.innerHTML='';
+	tiempo.innerHTML = '';
 	lastFrame = +new Date;
 	timer = setInterval(function () { moverNave(); }, 1);
 	timerButton = setInterval(function () { actualizarColorBoton(); }, 50);
@@ -235,26 +312,27 @@ function pararNave() {
 	comprobarNaveEstrellada();
 }
 
-function comprobarNaveEstrellada(){
-
+function comprobarNaveEstrellada() {
+	modal.classList.remove('hidden');
 	if (Math.abs(velocidad) > vImpacto) {
 		nave.src = "img/crash.gif";
 		incrementarMarcador();
-		naveEstrellada=true;
+		naveEstrellada = true;
 		crashSound.play();
-		modalCrash.classList.remove('hidden');
+		crearModalFinPartida('derrota');
 		ponerEstadisticas();
 	}
 
-	else{
-		modalVictoria.classList.remove('hidden');
+	else {
+		crearModalFinPartida('victoria');
+		crearModalVictoria();
 	}
 
-	fuel=0;
+	fuel = 0;
 }
 
-function ponerEstadisticas(){
-	gasolinaRestante.innerHTML = fuel;
+function ponerEstadisticas() {
+	gasolinaRestante.innerHTML = fuel.toFixed(1);
 	velocidadImpacto.innerHTML = velocidad.toFixed(2);
 }
 
@@ -266,11 +344,9 @@ function actualizarFuel() {
 	if (fuel <= 0) {
 		comprobarApagadoMotor();
 	}
-	
+
 	marcadorFuel.style.width = fuel + '%';
 	marcadorFuelNegativo.style.width = 100 - fuel + '%';
-
-	
 }
 
 function incrementarMarcador() {
@@ -280,21 +356,12 @@ function incrementarMarcador() {
 
 /***************************Pausa y reiniciar******************************/
 
-function reiniciarModal(boton){
-	reiniciar();
-	if(boton.srcElement.className === 'modal__item reiniciar__modal de'){
-		modalCrash.classList.add('hidden');
-	}
-	else{
-		modalVictoria.classList.add('hidden');
-	}
-}
-
 function pausa() {
 	modal.classList.remove('hidden');
 	pause = true;
 	clearInterval(timer);
 	clearInterval(timerFuel);
+	crearMenuPrincipal();
 }
 
 function reanudar() {
@@ -312,29 +379,9 @@ function reiniciar() {
 	altura = 10;
 	fuel = 100;
 	velocidad = 0;
-	naveEstrellada=false;
+	naveEstrellada = false;
 	actualizarFuel();
-	nave.src="img/nave_sin_fuego.svg";
-}
-
-function mostrarInstrucciones() {
-	switchMenus(modalInstrucciones, modalMenu);
-}
-
-function mostrarAbout() {
-	switchMenus(modalAbout, modalMenu);
-}
-
-function mostrarDificultad() {
-	switchMenus(modalDificultad, modalMenu);
-}
-
-function volverIn() {
-	switchMenus(modalMenu, modalInstrucciones);
-}
-
-function volverAb() {
-	switchMenus(modalMenu, modalAbout);
+	nave.src = "img/nave_sin_fuego.svg";
 }
 
 /*Comprobaciones*/
@@ -348,53 +395,42 @@ function comprobarEstadoMotor() {
 	return true;
 }
 
-function comprobarApagadoMotor(){
-	if(!naveEstrellada){
+function comprobarApagadoMotor() {
+	if (!naveEstrellada) {
 		motorOff();
 	}
-	else{
+	else {
 		clearInterval(timerFuel);
-		a=g;
-		motorRoto=false;
+		a = g;
+		motorRoto = false;
 	}
 }
 
 /***************Dificultad***************/
 
-function cambiarDificultad(dif) {
-
-	borrarActivos(document.querySelectorAll('.modal__item'));
-	switchMenus(modalMenu, modalDificultad);
+function cambiarDificultad(boton) {
+	const dif = boton.innerHTML;
+	crearMenuPrincipal();
 
 	switch (dif) {
-		case "facil":
+		case "Fácil":
 			dificultad = 0.3;
 			vImpacto = 5;
-			botonFacil.classList.add('active');
 			break;
-		case "normal":
+		case "Normal":
 			vImpacto = 4;
 			dificultad = 0.4;
-			botonNormal.classList.add('active');
 			break;
-		case "dificil":
+		case "Difícil":
 			vImpacto = 3;
 			dificultad = 0.6;
-			botonDificil.classList.add('active');
 			break;
-		case "imposible":
+		case "Imposible":
 			vImpacto = 2;
 			dificultad = 0.8;
-			botonImposible.classList.add('active');
 			break;
 	}
 
-}
-
-function borrarActivos(generalClass) {
-	for (let activo = 0; activo < generalClass.length; activo++) {
-		generalClass[activo].classList.remove('active');
-	}
 }
 
 /*******************Volumen********************/
@@ -423,7 +459,125 @@ function crearIcono(clase) {
 	return icono;
 }
 
+/****************Crear Modales*****************/
+
+function crearMenuPrincipal() {
+	modalInner.innerHTML = modalMenu;
+	cambiarTamanyoModal('pequenyo');
+
+	const links = Array.from(document.querySelectorAll('.modal__link'));
+
+	for (let elemento = 0; elemento < links.length; elemento++) {
+		links[elemento].addEventListener('click', function () { aplicarEventListenerMenu(links[elemento].innerHTML) });
+	}
+}
+
+function crearModalInstrucciones() {
+	modalInner.innerHTML = modalInstrucciones;
+	configurarBotonVolver();
+}
+
+function crearModalAbout() {
+	modalInner.innerHTML = modalAbout;
+	configurarBotonVolver();
+}
+
+function crearModalDificultad() {
+	modalInner.innerHTML = modalDificultad;
+	iluminarDificultad();
+	const links = Array.from(document.querySelectorAll('.modal__link'));
+
+	for (let elemento = 0; elemento < links.length; elemento++) {
+		links[elemento].addEventListener('click', function () { cambiarDificultad(links[elemento]) });
+	}
+
+}
+
+function crearModalFinPartida(resultado) {
+	cambiarTamanyoModal('pequenyo');
+	if(resultado === 'victoria'){
+		modalInner.innerHTML = modalVictoria;
+	}
+	else{
+		modalInner.innerHTML = modalDerrota;
+		velocidadImpacto = document.querySelector('.modal__v-impacto');
+		gasolinaRestante = document.querySelector('.modal__gasolina');
+	}
+	reiniciarModal();
+}
+
+function reiniciarModal(){
+	const botonReiniciarModal = Array.from(document.querySelectorAll('.reiniciar-modal'));
+	
+	botonReiniciarModal.forEach(botonModal => botonModal.addEventListener('click',function(){modal.classList.add('hidden');reiniciar();}));
+}
+
+function cambiarTamanyoModal(tamanyo){
+	if(tamanyo === 'pequenyo'){
+		modalInner.classList.remove('grande');
+	}
+	else{
+		modalInner.classList.add('grande');
+	}
+}
+
+function iluminarDificultad() {
+	const items = Array.from(document.querySelectorAll('.modal__item'));
+
+	switch (dificultad) {
+		case 0.3:
+			items[0].classList.add('active');
+			break;
+		case 0.4:
+			items[1].classList.add('active');
+			break;
+		case 0.6:
+			items[2].classList.add('active');
+			break;
+		case 0.8:
+			items[3].classList.add('active');
+			break;
+	}
+
+}
+
+function configurarBotonVolver() {
+	const botonVolver = document.querySelector('.volver');
+	botonVolver.addEventListener('click', crearMenuPrincipal);
+}
+
+function aplicarEventListenerMenu(texto) {
+	if(texto!="Dificultad"){
+		cambiarTamanyoModal('grande');
+	}
+
+	switch (texto) {
+		case "Continuar":
+			reanudar();
+			break;
+		case "Instrucciones":
+			crearModalInstrucciones();
+			break;
+		case "About":
+			crearModalAbout();
+			break;
+		case "Dificultad":
+			crearModalDificultad();
+			break;
+	}
+}
+
+function anyadirClases(clases, objeto) {
+
+	for (let clase = 0; clase < clases.length; clases++) {
+		objeto.classList.add(clases[clase]);
+	}
+
+	return objeto;
+}
+
 /*Comprobar si el motor puede ser encendido*/
+
 function comprobarEncendido() {
 	motorRoto = comprobarEstadoMotor();
 
@@ -461,10 +615,3 @@ function actualizarColorBoton() {
 		botonEncender.classList.remove('glow');
 	}
 }
-/***************Utilidades***************/
-
-function switchMenus(menuA, menuB) {
-	menuB.classList.add('hidden');
-	menuA.classList.remove('hidden');
-}
-

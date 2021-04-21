@@ -107,6 +107,35 @@ body,html{
     border:1px solid #fff;
 }
 
+.grande{
+    height:670px;
+    width:600px ;
+}
+
+.boton-modal{
+    display:block;
+    border:2px solid rgb(1,0,180);
+    margin:35px auto;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:25px;
+    padding:16px;
+    background-color:rgb(1, 0, 34);
+}
+
+.boton-modal:hover{
+    color:#f2fc88;
+    text-shadow:0 0 2px #f4ff7f, 0 0 5px ;
+}
+
+.w-100{
+    width:100%;
+}
+
+.w-50{
+    width:50%;
+}
+
 /******************Botonera*********************/
 
 .botonera > *{
@@ -262,6 +291,7 @@ body,html{
     height:100%;
 
 }
+
 .tiempo{
     margin:auto;
     font-size:100px;
@@ -269,6 +299,7 @@ body,html{
 }
 
 /****************************Modales***************************/
+
 .modal{
     width:100%;
     height:100%;
@@ -291,24 +322,23 @@ body,html{
     opacity:.9;
 }
 
+.grande{
+    height:670px;
+    width:600px ;
+}
+
 .modal__menu{
     margin:auto;
     text-align:center;
     width:80%;
 }
 
-.modal__item{
+.modal__link{
     width:100%;
-    border:2px solid rgb(1,0,180);
-    margin:30px auto;
-    border-radius:10px;
-    padding:16px;
-    cursor:pointer;
-    font-size:25px;
-    background-color:rgb(1, 0, 34);
+    height:100%;
 }
 
-.modal__item:hover>.modal__link{
+.modal__link:hover{
     color:#f2fc88;
     text-shadow:0 0 2px #f4ff7f, 0 0 5px #f4ff7f;
 }
@@ -334,39 +364,13 @@ body,html{
     margin-top:100px;
 }
 
-/*Modal instrucciones*/
-
-.instrucciones__menu .modal__inner,
-.about__menu .modal__inner, .inicial__menu .modal__inner {
-    width:600px;
-    height:600px;
-}
-
-.instrucciones__menu .modal__inner, .inicial__menu .modal__inner{
-    height:670px; 
-}
-
-
 .modal__parrafo{
    padding:15px;
    margin:25px 0;
 }
+
 .modal__subtitulo{
     font-size:1.5rem;
-}
-
-.volver,.empezar{
-    color:#fff;
-    position:absolute;
-    bottom:0;
-    left:50%;
-    width:94%;
-    transform:translateX(-50%);
-}
-
-.volver:hover{
-    color:#f2fc88;
-    text-shadow:0 0 2px #f4ff7f, 0 0 5px ;
 }
 
 .active .modal__link{
