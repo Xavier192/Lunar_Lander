@@ -315,6 +315,7 @@ function pararNave() {
 	comprobarNaveEstrellada();
 }
 
+
 function comprobarNaveEstrellada() {
 
 	if (Math.abs(velocidad) > vImpacto) {
