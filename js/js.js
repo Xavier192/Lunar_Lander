@@ -7,9 +7,11 @@ let timerButton = null;
 //Bloqueadores de acciones
 let motorRoto = false;
 let pause = false;
+let partidaIniciada = false;
 let botonEncendido = false;
 let musicaActivada = true;
 let naveEstrellada = false;
+let naveAterrizada = false;
 //Variables de la nave.
 let g = 1.622;
 let vImpacto = 5;
@@ -65,8 +67,9 @@ const modalAbout = '<div class="modal__cuerpo">'
 	+ '<p class="modal__parrafo">Este proyecto ha sido realizado por un alumno de primero de DAM como proyecto'
 	+ 'para la asignatura de Lenguage de marcas. </p>'
 	+ '<br>'
-	+ '<p class="modal__parrafo">Nombre: Xavier Lliteras Morell. </p>'
-	+ '<p class="modal__parrafo">Fecha: 29/03/2021</p>'
+	+ '<p class="modal__estadistica">- Nombre: Xavier Lliteras Morell. </p>'
+	+ '<p class="modal__estadistica">- Fecha: 29/03/2021</p>'
+	+'<p class="modal__estadistica">- Música de https://www.bensound.com</p>'
 	+ '<button type="button" class="volver boton-modal w-100">Volver</button>'
 	+ '</div>';
 
@@ -79,19 +82,19 @@ const modalDificultad = '<ul class="modal__menu">'
 
 const modalDerrota = '<div class="modal__cuerpo">'
 	+ '<h1 class="modal__titulo">Te has estrellado</h1>'
-	+ '<p class="modal__parrafo modal__subtitulo">Estadísticas</p>'
-	+ '<p class="modal__parrafo">Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>'
-	+ '<p class="modal__parrafo">Supervivientes: 0.</p>'
-	+ '<p class="modal__parrafo">Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>'
+	+ '<p class="modal__parrafo">Lamentablemente tu nave ha perdido el control y se ha estrellado. Todos han muerto.</p>'
+	+ '<p class="modal__estadistica">- Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>'
+	+ '<p class="modal__estadistica">- Supervivientes: 0.</p>'
+	+ '<p class="modal__estadistica">- Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>'
 	+ '<button type="button" class="boton-modal w-50 reiniciar-modal">Reiniciar</button>'
 	+ '</div>';
 
 const modalVictoria = '<div class="modal__cuerpo">'
 	+ '<h1 class="modal__titulo">¡Misión cumplida!</h1>'
 	+ '<p class="modal__parrafo">Has alunizado con éxito. Toda tu tripulación aplaude tu gran proeza.</p>'
-	+ '<p class="modal__parrafo">Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>'
-	+ '<p class="modal__parrafo">Supervivientes: TODOS.</p>'
-	+ '<p class="modal__parrafo">Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>'
+	+ '<p class="modal__estadistica">- Velocidad de impacto: <span class="modal__v-impacto"> </span>m/s.</p>'
+	+ '<p class="modal__estadistica">- Supervivientes: TODOS.</p>'
+	+ '<p class="modal__estadistica">- Gasolina sin gastar: <span class="modal__gasolina"></span>L.</p>'
 	+ '<button type="button" class="boton-modal w-50 reiniciar-modal">Reiniciar</button>'
 	+ '</div>';
 
@@ -164,6 +167,7 @@ crashSound.volume = 0.2;
 /******************Loop musica y sonido****************/
 
 musica.addEventListener('ended', function () {
+	
 	this.currentTime = 0;
 	this.play();
 }, false);
@@ -202,7 +206,7 @@ function cerrarModalInicial() {
 }
 
 async function esperarTresSegundos() {
-
+	partidaIniciada = false;
 	for (let seconds = 2; seconds > -1; seconds--) {
 		await sleep(1000);
 		tiempo.innerHTML = '' + seconds;
@@ -211,6 +215,7 @@ async function esperarTresSegundos() {
 	if(!pause){
 		start();
 	}
+	partidaIniciada = true;
 }
 
 function sleep(ms) {
@@ -304,13 +309,13 @@ function comprobarLimites() {
 }
 
 function pararNave() {
+	naveAterrizada = true;
 	clearInterval(timer);
 	apagarBoton();
 	comprobarNaveEstrellada();
 }
-/*****He revisado hasta aqui********/
+
 function comprobarNaveEstrellada() {
-	fuel = 0;
 
 	if (Math.abs(velocidad) > vImpacto) {
 		estrellarNave();
@@ -323,7 +328,6 @@ function comprobarNaveEstrellada() {
 }
 
 function estrellarNave(){
-	
 	nave.src = "img/crash.gif";
 	intentos++;
 	marcadorIntentos.innerHTML = intentos;
@@ -341,7 +345,7 @@ function ponerEstadisticas() {
 function actualizarFuel() {
 	fuel -= dificultad;
 
-	if (fuel <= 0) {
+	if (fuel <= 0 || naveAterrizada) {
 		comprobarApagadoMotor();
 	}
 	else{
@@ -363,7 +367,11 @@ function pausa() {
 function reanudar() {
 	modal.classList.add('hidden');
 	pause = false;
-	start();
+
+	if(partidaIniciada){
+		start();
+	}
+	
 }
 
 function reiniciar() {
@@ -371,10 +379,10 @@ function reiniciar() {
 	if (altura > limiteInferior) {
 		start();
 	}
-
 	altura = 10;
 	fuel = 100;
 	velocidad = 0;
+	naveAterrizada = false;
 	naveEstrellada = false;
 	actualizarFuel();
 	nave.src = "img/nave_sin_fuego.svg";
@@ -384,7 +392,7 @@ function reiniciar() {
 
 function comprobarEstadoMotor() {
 
-	if (!motorRoto && fuel > 0 && !pause) {
+	if (!motorRoto && fuel > 0 && !pause && !naveAterrizada && partidaIniciada) {
 		return false;
 	}
 
@@ -436,7 +444,7 @@ function switchVolumen() {
 		musica.pause();
 		musica.currentTime = 0;
 		musicaActivada = false;
-		vol.innerHTML = '<i class="fa fa-volumne-mute"></i>';
+		vol.innerHTML = '<i class="fa fa-volume-mute"></i>';
 	}
 	else {
 		musica.play();
@@ -460,12 +468,10 @@ function crearMenuPrincipal() {
 
 function crearModalInstrucciones() {
 	modalInner.innerHTML = modalInstrucciones;
-	configurarBotonVolver();
 }
 
 function crearModalAbout() {
 	modalInner.innerHTML = modalAbout;
-	configurarBotonVolver();
 }
 
 function crearModalDificultad() {
@@ -545,9 +551,11 @@ function aplicarEventListenerMenu(texto) {
 			break;
 		case "Instrucciones":
 			crearModalInstrucciones();
+			configurarBotonVolver();
 			break;
 		case "About":
 			crearModalAbout();
+			configurarBotonVolver();
 			break;
 		case "Dificultad":
 			crearModalDificultad();
