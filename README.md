@@ -10,7 +10,7 @@ Demo : https://raw.githack.com/Xavier192/Lunar_Lander/master/index.html
 
 ## Cómo ejecutarlo 🔧
 
-Sólo debes descargarte el proyecto y abrir el archivo index.html con tu navegador.
+Sólo debes descargarte el proyecto y abrir el archivo index.html con tu navegador o correr la demo de la parte superior.
 
 ## Pre-requisitos 📋
 
