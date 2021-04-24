@@ -1,8 +1,6 @@
 # Lunar Lander 🚀
 
-El juego consiste en una nave que cae hacía la luna. Nuestro objectivo consiste en evitar estrellarnos contra ella, acelerando pulsando cualquier tecla
-o el botón de acelerar en la versión móvil. Según la velocidad de impacto que alcancemos cuando tocamos la luna nos estrellaremos o no. La velocidad de impacto varía
-según la dificultad.
+El juego consiste en una nave que cae hacia la luna. Nuestro objetivo consiste en evitar estrellarnos contra ella, acelerando pulsando cualquier tecla o el botón de acelerar en la versión móvil. Según la velocidad de impacto que alcancemos cuando toquemos la luna nos estrellaremos o no. La velocidad de impacto varía según la dificultad.
 
 ## Visualización del proyecto
 
