@@ -24,6 +24,8 @@ Se han usado las siguientes tecnologías:
 
 ## Versionado 📌
 
+[tags en este repositorio](https://github.com/Xavier192/Lunar_Lander/tags)
+
 ## Autores ✒️
 
 * Xavier
