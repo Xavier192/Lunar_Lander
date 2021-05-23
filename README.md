@@ -4,7 +4,7 @@ El juego consiste en una nave que cae hacia la luna. Nuestro objetivo es evitar 
 
 ## Visualización del proyecto
 
-Demo : https://raw.githack.com/Xavier192/Lunar_Lander/master/index.html
+Demo : https://xavier192.github.io/Lunar_Lander/
 
 ## Cómo ejecutarlo 🔧
 
