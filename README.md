@@ -29,3 +29,7 @@ Se han usado las siguientes tecnologías:
 ## Autores ✒️
 
 * Xavier
+
+## Screenshot
+
+![](./screenshot.jpg)
